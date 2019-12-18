@@ -1,0 +1,15 @@
+{
+    "name": "noteminus",
+    "author": "isbadatenglish",
+    "license": "MIT",
+    "scripts": {
+        "copy-css": "cp -rf src/css dist/",
+        "copy-html": "cp -rf src/*.html dist/",
+        "compile-ts": "tsc",
+        "app": "npm run copy-css && npm run copy-html && npm run compile-ts && electron dist/main.js"
+    },
+    "dependencies": {
+        "electron": "^7.1.5",
+        "typescript": "^3.7.3"
+    }
+}
