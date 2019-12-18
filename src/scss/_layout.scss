@@ -1,0 +1,41 @@
+.material-icons {
+    font-size: 1em;
+}
+
+.main {
+    display: flex;
+    flex-direction: row;
+
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+
+        .sidebar-collection {
+            display: flex;
+            flex-direction: column;
+
+            .collection-item {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+    }
+
+    .browser {
+        display: flex;
+        flex-direction: column;
+
+        .navigation-bar {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .directory-contents {
+            .directory-item {
+                display: flex;
+                flex-direction: row;
+            }
+        }
+    }
+}

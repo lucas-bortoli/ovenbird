@@ -1,15 +1,62 @@
 <html>
     <head>
-        <title>Note-</title>
+        <title>Ovenbird</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="css/index.css">
     </head>
     <body>
         <div class="main">
-            <h2 class="title">Note-</h2>
-            <ol>
-                <li class="recent-file" x-file-path="./file1.md">file1.md</li>
-                <li class="recent-file" x-file-path="./file2.md">file2.md</li>
-            </ol>
+            <div class="sidebar">
+                <div class="sidebar-collection favorites">
+                    <div class="collection-item">
+                        <span class="material-icons">folder</span>
+                        <span class="name">Projetos</span>
+                    </div>
+                    <div class="collection-item">
+                        <span class="material-icons">folder</span>
+                        <span class="name">Jogos</span>
+                    </div>
+                    <div class="collection-item">
+                        <span class="material-icons">folder</span>
+                        <span class="name">Nova Pasta</span>
+                    </div>
+                </div>
+                <div class="sidebar-collection drives">
+                    <div class="collection-item">
+                        <span class="material-icons">usb</span>
+                        <span class="name">C:</span>
+                    </div>
+                    <div class="collection-item">
+                        <span class="material-icons">usb</span>
+                        <span class="name">F:</span>
+                    </div>
+                </div>
+            </div>
+            <div class="browser">
+                <div class="navigation-bar">
+                    <button class="material-icons nav-button">arrow_back</button>
+                    <button class="material-icons nav-button">arrow_forward</button>
+                    <input class="nav-path" value="F:/Projetos/ovenbird/">
+                </div>
+                <div class="directory-contents">
+                    <div class="directory-item folder">
+                        <span class="material-icons">folder</span>
+                        <span class="name">Pasta 1</span>
+                    </div>
+                    <div class="directory-item folder">
+                        <span class="material-icons">folder</span>
+                        <span class="name">Pasta 2</span>
+                    </div>
+                    <div class="directory-item folder">
+                        <span class="material-icons">folder</span>
+                        <span class="name">Pasta 3</span>
+                    </div>
+                    <div class="directory-item file">
+                        <span class="material-icons">insert_drive_file</span>
+                        <span class="name">.gitignore</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -1,15 +1,16 @@
 {
-    "name": "noteminus",
+    "name": "ovenbird",
     "author": "isbadatenglish",
+    "description": "Electron + TypeScript file manager",
     "license": "MIT",
     "scripts": {
-        "copy-css": "cp -rf src/css dist/",
-        "copy-html": "cp -rf src/*.html dist/",
         "compile-ts": "tsc",
-        "app": "npm run copy-css && npm run copy-html && npm run compile-ts && electron dist/main.js"
+        "compile-scss": "sass src/scss/:dist/css/",
+        "app": "cp -rf src/*.html dist/ && npm run compile-scss && npm run compile-ts && electron dist/main.js"
     },
     "dependencies": {
         "electron": "^7.1.5",
+        "sass": "^1.23.7",
         "typescript": "^3.7.3"
     }
 }
