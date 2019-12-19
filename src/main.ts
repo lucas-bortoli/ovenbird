@@ -7,7 +7,10 @@ app.on('ready', () => {
         width: 640,
         height: 345,
         useContentSize: true,
-        autoHideMenuBar: true
+        autoHideMenuBar: true,
+        webPreferences: {
+            zoomFactor: 1.0
+        }
     })
 
     win.loadFile('index.html')

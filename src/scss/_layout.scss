@@ -58,12 +58,84 @@
         .navigation-bar {
             display: flex;
             flex-direction: row;
+            padding: 1em 0;
+            background: $primary-0;
+            align-items: center;
+
+            .nav-button {
+                background: transparent;
+                color: white;
+                border: 0;
+                font-size: 1.3em;
+                margin: 0 0.4em;
+                position: relative;
+                cursor: pointer;
+                outline: none;
+
+                &:hover::before {
+                    width: 1.6em;
+                    height: 1.6em;
+                    left: -0.025em;
+                    top: -0.3em;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.2);
+                    content: "";
+                    display: inline-block;
+                    position: absolute;
+                }
+            }
+
+            .path {
+                display: inline-flex;
+                flex-direction: row;
+                flex-grow: 1;
+
+                .path_part {
+                    color: rgb(177, 177, 177);;
+                    font-size: 0.8em;
+                    transition: color 0.2s ease-in-out;
+
+                    &:hover {
+                        transition: color 0.2s ease-in-out;
+                        color: white;
+                        cursor: pointer;
+                    }
+    
+                    &:not(:first-of-type)::before {
+                        color: rgb(177, 177, 177);
+                        margin: 0.2em 0.2em;
+                        font-family: 'Material Icons';
+                        content: "arrow_right";
+                        vertical-align: -20%;
+                    }
+                }
+            }
         }
 
         .directory-contents {
             .directory-item {
                 display: flex;
                 flex-direction: row;
+                padding: 0.5em 0.7em;
+                align-items: center;
+                transition: background-color 0.1s ease-in-out;
+
+                &:hover {
+                    background: rgba(0, 0, 0, 0.1);
+                    transition: background-color 0.1s ease-in-out;
+                    cursor: pointer;
+                }
+                
+                .name {
+                    padding: 0 0.7em;
+                    flex-grow: 1;
+                }
+
+                .cdate {
+                    font-size: 0.7em;
+                    color: $text-secondary;
+                }
+
             }
         }
     }
