@@ -65,6 +65,7 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+        min-width: 0;
 
         .navigation-bar {
             display: flex;
@@ -102,6 +103,8 @@
 
                 &.hidden {
                     display: none;
+                    flex-grow: 0;
+                    width: 0px;
                 }
             }
 
@@ -109,6 +112,7 @@
                 display: inline-flex;
                 flex-direction: row;
                 flex-grow: 1;
+                flex-shrink: 1;
 
                 &.hidden {
                     display: none;
@@ -168,7 +172,6 @@
                     padding: 0 0.7em;
                     flex-grow: 1;
                     flex-shrink: 1;
-                    max-width: 30em;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     overflow: hidden;
