@@ -9,7 +9,9 @@
         "app": "cp -rf src/*.html dist/ && npm run compile-scss && npm run compile-ts && electron dist/main.js"
     },
     "dependencies": {
+        "@types/mz": "^2.7.0",
         "electron": "^7.1.5",
+        "mz": "^2.7.0",
         "sass": "^1.23.7",
         "typescript": "^3.7.3"
     }

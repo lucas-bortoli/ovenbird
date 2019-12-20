@@ -9,7 +9,8 @@ app.on('ready', () => {
         useContentSize: true,
         autoHideMenuBar: true,
         webPreferences: {
-            zoomFactor: 1.0
+            zoomFactor: 1.0,
+            nodeIntegration: true
         }
     })
 
