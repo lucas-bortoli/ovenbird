@@ -109,7 +109,7 @@
                 display: inline-flex;
                 flex-direction: row;
                 flex-grow: 1;
-                
+
                 &.hidden {
                     display: none;
                 }
@@ -123,6 +123,11 @@
                         transition: color 0.2s ease-in-out;
                         color: white;
                         cursor: pointer;
+                    }
+
+                    &:active {
+                        transition: color 0.05s ease-in-out, transform 0.1s ease-in-out;
+                        color: rgb(158, 158, 158);
                     }
     
                     &:not(:first-of-type)::before {
@@ -152,6 +157,11 @@
                     background: rgba(0, 0, 0, 0.1);
                     transition: background-color 0.1s ease-in-out;
                     cursor: pointer;
+                }
+
+                &:active {
+                    background: rgba(0, 0, 0, 0.3);
+                    transition: background-color 0.05s ease-in-out;
                 }
                 
                 .name {

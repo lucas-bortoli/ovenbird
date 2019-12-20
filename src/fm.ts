@@ -1,6 +1,7 @@
 import { readdir, stat } from 'mz/fs'
 import { join, dirname, extname, basename, sep, normalize } from 'path'
 import { CreateDirectoryItemElement, CreatePathSegment } from './elements'
+import { shell } from 'electron'
 import DirectoryItem from './interfaces/directoryitem'
 
 class FileManager {
@@ -46,6 +47,7 @@ class FileManager {
 
     public change_dir(newPath: string) : void {
         newPath = normalize(newPath + '/')
+
         this.path = newPath
         this.updateListing()
 
@@ -53,8 +55,6 @@ class FileManager {
 
         let segments: string[] = newPath.split(sep).filter(s => s.length > 1)
         let e_segments: HTMLDivElement[] = segments.map((s, i) => CreatePathSegment(s, segments.slice(0, i+1).join(sep)))
-        
-        console.log(newPath, segments, segments.length, e_segments.length)
 
         e_segments.forEach(seg => {
             this.E_PathElement.appendChild(seg)
@@ -91,9 +91,15 @@ class FileManager {
             let item: DirectoryItem = await this.parseDirectoryItem(path)
             let e_item: HTMLDivElement = CreateDirectoryItemElement(item)
 
-            if (item.directory)
+            if (item.directory) {
                 e_item.addEventListener('dblclick', () =>
                     this.change_dir(e_item.getAttribute('x-path')))
+            } else {
+                e_item.addEventListener('dblclick', () => {
+                    let item = e_item.getAttribute('x-path')
+                    shell.openItem(item)
+                })
+            }
     
             this.E_DirContents.appendChild(e_item)
             console.log(`Adicionado à lista: ${path}`)
