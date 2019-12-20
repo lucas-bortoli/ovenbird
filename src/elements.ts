@@ -1,3 +1,4 @@
+import * as moment from 'moment'
 import DirectoryItem from "./interfaces/directoryitem"
 
 const CreateDirectoryItemElement = (item: DirectoryItem) : HTMLDivElement => {
@@ -15,7 +16,7 @@ const CreateDirectoryItemElement = (item: DirectoryItem) : HTMLDivElement => {
     e_name.innerText = item.name
 
     e_date.classList.add('cdate')
-    e_date.innerText = item.creation_date.toLocaleString()
+    e_date.innerText = moment(item.creation_date).format('YYYY/MM/DD HH:MM')
 
     e_wrapper.appendChild(e_icon)
     e_wrapper.appendChild(e_name)

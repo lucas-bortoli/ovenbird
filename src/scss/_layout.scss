@@ -144,12 +144,15 @@
                 .name {
                     padding: 0 0.7em;
                     flex-grow: 1;
+                    flex-shrink: 1;
+                    min-width: 0;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     overflow: hidden;
                 }
 
                 .cdate {
+                    flex-shrink: 0;
                     font-size: 0.7em;
                     color: $text-secondary;
                 }
