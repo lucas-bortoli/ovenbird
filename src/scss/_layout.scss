@@ -126,7 +126,7 @@
         .directory-contents {
             overflow-y: scroll;
             flex-grow: 1;
-            
+
             .directory-item {
                 display: flex;
                 flex-direction: row;
@@ -134,7 +134,7 @@
                 align-items: center;
                 transition: background-color 0.1s ease-in-out;
                 overflow: hidden;
-                
+
                 &:hover {
                     background: rgba(0, 0, 0, 0.1);
                     transition: background-color 0.1s ease-in-out;
@@ -145,7 +145,7 @@
                     padding: 0 0.7em;
                     flex-grow: 1;
                     flex-shrink: 1;
-                    min-width: 0;
+                    max-width: 30em;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     overflow: hidden;
@@ -155,6 +155,7 @@
                     flex-shrink: 0;
                     font-size: 0.7em;
                     color: $text-secondary;
+                    align-self: flex-end;
                 }
 
             }

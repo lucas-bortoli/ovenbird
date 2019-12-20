@@ -9,6 +9,11 @@ class FileManager {
     private E_DirContents: HTMLDivElement = document.querySelector('.directory-contents')
     private E_PathElement: HTMLDivElement = document.querySelector('.path')
 
+    public change_dir(newPath: string) : void {
+        this.path = newPath
+        this.updateListing()
+    }
+
     public async updateListing () : Promise<void> {
         let files: string[] = await readdir(this.path)
 
@@ -34,6 +39,10 @@ class FileManager {
         try {
             let item: DirectoryItem = await this.parseDirectoryItem(path)
             let e_item: HTMLDivElement = CreateDirectoryItemElement(item)
+
+            if (item.directory)
+                e_item.addEventListener('dblclick', () =>
+                    this.change_dir(e_item.getAttribute('x-path')))
     
             this.E_DirContents.appendChild(e_item)
             console.log(`Adicionado à lista: ${path}`)
