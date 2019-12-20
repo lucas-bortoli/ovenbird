@@ -16,6 +16,7 @@ const CreateDirectoryItemElement = (item: DirectoryItem) : HTMLDivElement => {
 
     e_name.classList.add('name')
     e_name.innerText = item.name
+    e_wrapper.setAttribute('title', item.name)
 
     e_date.classList.add('cdate')
     e_date.innerText = moment(item.creation_date).format('YYYY/MM/DD HH:MM')
