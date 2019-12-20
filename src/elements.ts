@@ -28,4 +28,14 @@ const CreateDirectoryItemElement = (item: DirectoryItem) : HTMLDivElement => {
     return e_wrapper
 }
 
-export { CreateDirectoryItemElement }
+const CreatePathSegment = (segment: string, path: string) : HTMLDivElement => {
+    const e_seg = document.createElement('div')
+
+    e_seg.classList.add('path_part')
+    e_seg.innerText = segment
+    e_seg.setAttribute('x-path', path)
+
+    return e_seg
+}
+
+export { CreateDirectoryItemElement, CreatePathSegment }

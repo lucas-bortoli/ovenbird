@@ -96,10 +96,23 @@
                 }
             }
 
+            .path-input {
+                display: inline-flex;
+                flex-grow: 1;
+
+                &.hidden {
+                    display: none;
+                }
+            }
+
             .path {
                 display: inline-flex;
                 flex-direction: row;
                 flex-grow: 1;
+                
+                &.hidden {
+                    display: none;
+                }
 
                 .path_part {
                     color: rgb(177, 177, 177);;
