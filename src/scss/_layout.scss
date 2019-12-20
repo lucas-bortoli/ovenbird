@@ -9,7 +9,7 @@
     height: 100%;
     overflow: hidden;
     font-family: 'Roboto', sans-serif;
-    
+
     .sidebar {
         display: flex;
         flex-direction: column;
@@ -118,7 +118,10 @@
                 flex-direction: row;
                 flex-grow: 1;
                 flex-shrink: 1;
-
+                overflow: hidden;
+                text-overflow: unset;
+                white-space: nowrap;
+                
                 &.hidden {
                     display: none;
                 }
