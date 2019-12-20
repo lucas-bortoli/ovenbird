@@ -10,6 +10,7 @@ class FileManager {
     private E_DirContents: HTMLDivElement = document.querySelector('.directory-contents')
     private E_PathElement: HTMLDivElement = document.querySelector('.path')
     private E_PathInput: HTMLInputElement = document.querySelector('.path-input')
+    private E_NavParentDir: HTMLInputElement = document.querySelector('#nav-parent-dir')
 
     constructor () {
         this.E_PathElement.addEventListener('contextmenu', e => {
@@ -42,6 +43,10 @@ class FileManager {
 
                 e.preventDefault()
             }
+        })
+
+        this.E_NavParentDir.addEventListener('click', () => {
+            this.change_dir(normalize(this.path + '../'))
         })
     }
 
