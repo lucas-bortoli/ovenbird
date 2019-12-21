@@ -3,6 +3,7 @@ import { join, dirname, extname, basename, sep, normalize } from 'path'
 import { CreateDirectoryItemElement, CreatePathSegment } from './elements'
 import { shell } from 'electron'
 import DirectoryItem from './interfaces/directoryitem'
+import ContextMenu from './context_menu'
 
 class FileManager {
     public path: string = 'C:/'
@@ -105,7 +106,24 @@ class FileManager {
                     this.change_dir(e_item.getAttribute('x-path'))
                 } else {
                     shell.openItem(e_item.getAttribute('x-path'))
+
+                    // remover todas as outras seleções ao abrir o arquivo
+                    document.querySelectorAll('.directory-item.selected')
+                        .forEach(item => item.classList.remove('selected'))
                 }
+            })
+
+            e_item.addEventListener('contextmenu', e => {
+                let ctx = new ContextMenu()
+
+                ctx.add_item({ icon: 'create', text: 'Renomear', click: () => { throw 'não implementado' } })
+                ctx.add_item({ icon: 'file_copy', text: 'Copiar', click: () => { throw 'não implementado' } })
+                ctx.add_item({ icon: 'clear', text: 'Apagar', click: () => { throw 'não implementado' } })
+                ctx.add_separator()
+                ctx.add_item({ icon: 'list', text: 'Detalhes', click: () => { throw 'não implementado' } })
+
+                ctx.popup({ x: e.clientX, y: e.clientY })
+                e_item.classList.add('selected')
             })
     
             this.E_DirContents.appendChild(e_item)
