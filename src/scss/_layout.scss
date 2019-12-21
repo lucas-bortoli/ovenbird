@@ -175,6 +175,17 @@
                     background: rgba(0, 0, 0, 0.3);
                     transition: background-color 0.05s ease-in-out;
                 }
+
+                &.selected {
+                    background: $diritem-selected-bg;
+
+                    .material-icons::before {
+                        font-family: 'Material Icons';
+                        content: 'check_box';
+                        margin: 0 1em 0 0;
+                        color: $diritem-selected-checkbox-fg;
+                    }
+                }
                 
                 .name {
                     padding: 0 0.7em;

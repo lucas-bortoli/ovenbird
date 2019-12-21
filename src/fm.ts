@@ -96,17 +96,20 @@ class FileManager {
             let item: DirectoryItem = await this.parseDirectoryItem(path)
             let e_item: HTMLDivElement = CreateDirectoryItemElement(item)
 
-            if (item.directory) {
-                e_item.addEventListener('dblclick', () =>
-                    this.change_dir(e_item.getAttribute('x-path')))
-            } else {
-                e_item.addEventListener('dblclick', () => {
-                    let item = e_item.getAttribute('x-path')
-                    shell.openItem(item)
-                })
-            }
+            e_item.addEventListener('click', () => {
+                e_item.classList.toggle('selected')
+            })
+
+            e_item.addEventListener('dblclick', () => {
+                if (item.directory) {
+                    this.change_dir(e_item.getAttribute('x-path'))
+                } else {
+                    shell.openItem(e_item.getAttribute('x-path'))
+                }
+            })
     
             this.E_DirContents.appendChild(e_item)
+
             console.log(`Adicionado à lista: ${path}`)
         } catch(ex) {
             console.error(`Impossível adicionar ${path} à lista`, ex)
