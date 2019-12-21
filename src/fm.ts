@@ -11,7 +11,8 @@ class FileManager {
     private E_DirContents: HTMLDivElement = document.querySelector('.directory-contents')
     private E_PathElement: HTMLDivElement = document.querySelector('.path')
     private E_PathInput: HTMLInputElement = document.querySelector('.path-input')
-    private E_NavParentDir: HTMLInputElement = document.querySelector('#nav-parent-dir')
+    private E_NavParentDir: HTMLButtonElement = document.querySelector('#nav-parent-dir')
+    private E_NavSort: HTMLButtonElement = document.querySelector('#nav-sort')
 
     constructor () {
         this.E_PathElement.addEventListener('contextmenu', e => {
@@ -48,6 +49,14 @@ class FileManager {
 
         this.E_NavParentDir.addEventListener('click', () => {
             this.change_dir(normalize(this.path + '../'))
+        })
+
+        this.E_NavSort.addEventListener('click', e => {
+            let menu = new ContextMenu()
+
+            menu.add_item({ text: 'Organizar por nome', click: () => {} })
+
+            menu.popup({ x: e.clientX, y: e.clientY })
         })
     }
 
