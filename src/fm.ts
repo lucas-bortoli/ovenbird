@@ -72,11 +72,27 @@ class FileManager {
     }
 
     public async updateListing () : Promise<void> {
-        let files: string[] = await readdir(this.path)
-
         this.E_DirContents.innerHTML = ''
 
-        files.forEach(f => this.addItemToListing(join(this.path, f)))
+        let filenames: string[] = await readdir(this.path)
+        let files: DirectoryItem[] = []
+
+        for (let filename of filenames) {
+            let path: string = join(this.path, filename)
+
+            try {
+                let file: DirectoryItem = await this.parseDirectoryItem(path)
+
+                files.push(file)
+            } catch(ex) {
+                console.warn(`Não foi possível adicionar o arquivo ${path} à lista`, ex)
+            }
+        }
+
+        files
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .sort((a, b) => Number(b.directory) - Number(a.directory))
+            .forEach(file => this.addItemToListing(file))
     }
 
     public async parseDirectoryItem(fullpath: string) : Promise<DirectoryItem> {
@@ -92,46 +108,39 @@ class FileManager {
         }
     }
 
-    private async addItemToListing (path: string) : Promise<void> {
-        try {
-            let item: DirectoryItem = await this.parseDirectoryItem(path)
-            let e_item: HTMLDivElement = CreateDirectoryItemElement(item)
+    private async addItemToListing(item: DirectoryItem): Promise<void> {
+        let e_item: HTMLDivElement = CreateDirectoryItemElement(item)
 
-            e_item.addEventListener('click', () => {
-                e_item.classList.toggle('selected')
-            })
+        e_item.addEventListener('click', () => {
+            e_item.classList.toggle('selected')
+        })
 
-            e_item.addEventListener('dblclick', () => {
-                if (item.directory) {
-                    this.change_dir(e_item.getAttribute('x-path'))
-                } else {
-                    shell.openItem(e_item.getAttribute('x-path'))
+        e_item.addEventListener('dblclick', () => {
+            if (item.directory) {
+                this.change_dir(e_item.getAttribute('x-path'))
+            } else {
+                shell.openItem(e_item.getAttribute('x-path'))
 
-                    // remover todas as outras seleções ao abrir o arquivo
-                    document.querySelectorAll('.directory-item.selected')
-                        .forEach(item => item.classList.remove('selected'))
-                }
-            })
+                // remover todas as outras seleções ao abrir o arquivo
+                document.querySelectorAll('.directory-item.selected')
+                    .forEach(item => item.classList.remove('selected'))
+            }
+        })
 
-            e_item.addEventListener('contextmenu', e => {
-                let ctx = new ContextMenu()
+        e_item.addEventListener('contextmenu', e => {
+            let ctx = new ContextMenu()
 
-                ctx.add_item({ icon: 'create', text: 'Renomear', click: () => { throw 'não implementado' } })
-                ctx.add_item({ icon: 'file_copy', text: 'Copiar', click: () => { throw 'não implementado' } })
-                ctx.add_item({ icon: 'clear', text: 'Apagar', click: () => { throw 'não implementado' } })
-                ctx.add_separator()
-                ctx.add_item({ icon: 'list', text: 'Detalhes', click: () => { throw 'não implementado' } })
+            ctx.add_item({ icon: 'create', text: 'Renomear', click: () => { throw 'não implementado' } })
+            ctx.add_item({ icon: 'file_copy', text: 'Copiar', click: () => { throw 'não implementado' } })
+            ctx.add_item({ icon: 'clear', text: 'Apagar', click: () => { throw 'não implementado' } })
+            ctx.add_separator()
+            ctx.add_item({ icon: 'list', text: 'Detalhes', click: () => { throw 'não implementado' } })
 
-                ctx.popup({ x: e.clientX, y: e.clientY })
-                e_item.classList.add('selected')
-            })
-    
-            this.E_DirContents.appendChild(e_item)
+            ctx.popup({ x: e.clientX, y: e.clientY })
+            e_item.classList.add('selected')
+        })
 
-            console.log(`Adicionado à lista: ${path}`)
-        } catch(ex) {
-            console.error(`Impossível adicionar ${path} à lista`, ex)
-        }
+        this.E_DirContents.appendChild(e_item)
     }
 }
 
