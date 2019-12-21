@@ -1,4 +1,4 @@
-import { readdir, stat } from 'mz/fs'
+import { readdir, stat, Dir } from 'mz/fs'
 import { join, dirname, extname, basename, sep, normalize } from 'path'
 import { CreateDirectoryItemElement, CreatePathSegment } from './elements'
 import { shell } from 'electron'
@@ -7,6 +7,8 @@ import ContextMenu from './context_menu'
 
 class FileManager {
     public path: string = 'C:/'
+
+    public sorting_method: string = 'name'
 
     private E_DirContents: HTMLDivElement = document.querySelector('.directory-contents')
     private E_PathElement: HTMLDivElement = document.querySelector('.path')
@@ -54,7 +56,9 @@ class FileManager {
         this.E_NavSort.addEventListener('click', e => {
             let menu = new ContextMenu()
 
-            menu.add_item({ text: 'Organizar por nome', click: () => {} })
+            menu.add_item({ text: 'Organizar por nome', click: () => { this.sorting_method = 'name'; this.updateListing() } })
+            menu.add_item({ text: 'Organizar por data de criação', click: () => { this.sorting_method = 'cdate'; this.updateListing() } })
+            menu.add_item({ text: 'Organizar por data de modificação', click: () => { this.sorting_method = 'mdate'; this.updateListing() } })
 
             menu.popup({ x: e.clientX, y: e.clientY })
         })
@@ -98,9 +102,8 @@ class FileManager {
             }
         }
 
-        files
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .sort((a, b) => Number(b.directory) - Number(a.directory))
+        this.sortFiles(files)
+            .sort((a, b) => Number(b.directory) - Number(a.directory)) // folders first
             .forEach(file => this.addItemToListing(file))
     }
 
@@ -111,8 +114,8 @@ class FileManager {
             name: basename(fullpath),
             extension: extname(fullpath),
             path: dirname(fullpath),
-            creation_date: s.ctime,
-            mod_date: s.mtime,
+            creation_date: s.birthtime,
+            mod_date: s.ctime,
             directory: s.isDirectory()
         }
     }
@@ -150,6 +153,18 @@ class FileManager {
         })
 
         this.E_DirContents.appendChild(e_item)
+    }
+
+    public sortFiles(files: DirectoryItem[]) : DirectoryItem[] {
+        switch (this.sorting_method) {
+            case 'cdate':
+                return files.sort((a, b) => a.creation_date.getMilliseconds() - b.creation_date.getMilliseconds())
+            case 'cdate':
+                return files.sort((a, b) => a.mod_date.getMilliseconds() - b.mod_date.getMilliseconds())
+            case 'name':
+            default:
+                return files.sort((a, b) => a.name.localeCompare(b.name))
+        }
     }
 }
 
