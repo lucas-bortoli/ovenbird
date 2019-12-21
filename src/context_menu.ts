@@ -54,8 +54,23 @@ class ContextMenu {
     public popup(where: { x: number, y: number }) : void {
         document.body.appendChild(this.overlay)
 
-        this.element.style.left = `${where.x}px`
-        this.element.style.top = `${where.y}px`
+        let menu = this.element
+
+        menu.style.left = `${where.x}px`
+        menu.style.top = `${where.y}px`
+
+        let bound_menu = menu.getBoundingClientRect()
+        let bound_screen = document.body.getBoundingClientRect()
+
+        if (bound_menu.right > bound_screen.right)
+            menu.style.left = `${bound_screen.right - bound_menu.width}px`
+        if (bound_menu.bottom > bound_screen.bottom)
+            menu.style.top = `${bound_screen.bottom - bound_menu.height}px`
+            
+        if (bound_menu.left < bound_screen.left)
+            menu.style.left = `0px`
+        if (bound_menu.top < bound_screen.top)
+            menu.style.top = `0px`
 
         let listener = (e: MouseEvent) => {
             e.stopPropagation()

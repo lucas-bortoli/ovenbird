@@ -236,6 +236,7 @@
             align-items: center;
             transition: background-color 0.1s ease-in-out;
             padding: 0.4em 1em;
+            white-space: nowrap;
             
             &:hover {
                 background: rgba(0, 0, 0, 0.1);
