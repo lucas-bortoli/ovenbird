@@ -2,11 +2,48 @@
     font-size: 1em;
 }
 
+.titlebar {
+    display: flex;
+    flex-direction: row;
+    height: 32px;
+    background: $titlebar-bg;
+    color: $titlebar-fg;
+    
+    .drag-region {
+        flex-grow: 1;
+        -webkit-app-region: drag;
+    }
+
+    .controls {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .control {
+            outline: none;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: white;
+            height: 32px;
+            width: 36px;
+
+            &:hover {
+                background: lighten($color: $titlebar-bg, $amount: 10%);
+            }
+
+            &.close:hover {
+                background: $titlebar-btn-close-bg;
+            }
+        }
+    }
+}
+
 .main {
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 32px);
     overflow: hidden;
     font-family: 'Roboto', sans-serif;
 

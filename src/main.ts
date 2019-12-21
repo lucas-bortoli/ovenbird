@@ -8,11 +8,15 @@ app.on('ready', () => {
         height: 345,
         useContentSize: true,
         autoHideMenuBar: true,
+        frame: false,
+        backgroundColor: '#FFF',
         webPreferences: {
             zoomFactor: 1.0,
             nodeIntegration: true
         }
     })
+
+    win.webContents.openDevTools()
 
     win.loadFile('index.html')
 

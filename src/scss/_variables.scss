@@ -2,16 +2,20 @@ $background: rgba(255, 255, 255, 1);
 $text-primary: rgba(40, 40, 40, 1);
 $text-secondary: rgba(100, 100, 100, 1);
 
-$sidebar-bg:    rgba(26,  27,  89,  1.0);
+$sidebar-bg:    #3F51B5;
 $sidebar-fg:    rgb(218, 218, 218);
 
-$nav-bg:        rgba(51,  53,  119, 1.0);
+$nav-bg:        #303F9F;
 $nav-fg:        rgba(255, 255, 255, 1.0);
 $nav-path-fg:   rgba(177, 177, 177, 1.0);
 
-$diritem-selected-bg:           rgba(63, 81, 181, 0.185);
-$diritem-selected-checkbox-fg:  rgba(63, 81, 181, 1.0);
+$diritem-selected-bg:           rgba(68, 137, 255, 0.376);
+$diritem-selected-checkbox-fg:  #448AFF;
 
 $context-menu-bg: rgba(255, 255, 255, 1.0);
 $context-menu-fg: rgba(40, 40, 40, 1.0);
 $context-menu-separator: rgb(199, 199, 199);
+
+$titlebar-bg: #303F9F;
+$titlebar-fg: #ffffff;
+$titlebar-btn-close-bg: #E81123;
