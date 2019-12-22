@@ -1,6 +1,7 @@
 import * as moment from 'moment'
 import DirectoryItem from "./interfaces/directoryitem"
 import { join } from 'path'
+import Drive from 'node-disk-info/dist/classes/drive'
 
 const CreateDirectoryItemElement = (item: DirectoryItem) : HTMLDivElement => {
     const e_wrapper = document.createElement('div')
@@ -28,6 +29,27 @@ const CreateDirectoryItemElement = (item: DirectoryItem) : HTMLDivElement => {
     return e_wrapper
 }
 
+const CreateDriveItemElement = (drive: Drive) : HTMLDivElement => {
+    const e_wrapper = document.createElement('div')
+    const e_icon = document.createElement('span')
+    const e_name = document.createElement('span')
+
+    e_wrapper.classList.add('collection-item')
+    e_icon.classList.add('material-icons', 'icon')
+    e_name.classList.add('name')
+
+    e_name.innerText = drive.mounted || drive.filesystem
+    e_icon.innerText = 'computer'
+
+    if (drive.filesystem.includes('CD-') || drive.filesystem.includes('DVD-'))
+        e_icon.innerText = 'album'
+
+    e_wrapper.appendChild(e_icon)
+    e_wrapper.appendChild(e_name)
+
+    return e_wrapper
+}
+
 const CreatePathSegment = (segment: string, path: string) : HTMLDivElement => {
     const e_seg = document.createElement('div')
 
@@ -38,4 +60,4 @@ const CreatePathSegment = (segment: string, path: string) : HTMLDivElement => {
     return e_seg
 }
 
-export { CreateDirectoryItemElement, CreatePathSegment }
+export { CreateDirectoryItemElement, CreatePathSegment, CreateDriveItemElement }

@@ -1,9 +1,12 @@
 import { readdir, stat, Dir } from 'mz/fs'
 import { join, dirname, extname, basename, sep, normalize } from 'path'
-import { CreateDirectoryItemElement, CreatePathSegment } from './elements'
+import { CreateDirectoryItemElement, CreatePathSegment, CreateDriveItemElement } from './elements'
 import { shell } from 'electron'
+import { getDiskInfo } from 'node-disk-info'
+
 import DirectoryItem from './interfaces/directoryitem'
 import ContextMenu from './context_menu'
+import Drive from 'node-disk-info/dist/classes/drive'
 
 class FileManager {
     public path: string = 'C:/'
@@ -15,6 +18,7 @@ class FileManager {
     private E_PathInput: HTMLInputElement = document.querySelector('.path-input')
     private E_NavParentDir: HTMLButtonElement = document.querySelector('#nav-parent-dir')
     private E_NavSort: HTMLButtonElement = document.querySelector('#nav-sort')
+    private E_DriveCollection: HTMLDivElement = document.querySelector('#drive-list')
 
     constructor () {
         this.E_PathElement.addEventListener('contextmenu', e => {
@@ -105,6 +109,24 @@ class FileManager {
         this.sortFiles(files)
             .sort((a, b) => Number(b.directory) - Number(a.directory)) // folders first
             .forEach(file => this.addItemToListing(file))
+    }
+
+    public async updateDriveListing() : Promise<void> {
+        const drives: Drive[] = await getDiskInfo()
+
+        this.E_DriveCollection.innerHTML = ''
+
+        drives.sort((a, b) => b.filesystem.localeCompare(a.filesystem))
+
+        for (let drive of drives) {
+            const e_drive: HTMLDivElement = CreateDriveItemElement(drive)
+
+            e_drive.addEventListener('click', () => this.change_dir(drive.mounted))
+
+            this.E_DriveCollection.appendChild(e_drive)
+
+            console.info(`Disco ${drive.mounted} adicionado, fs ${drive.filesystem}`)
+        }
     }
 
     public async parseDirectoryItem(fullpath: string) : Promise<DirectoryItem> {
