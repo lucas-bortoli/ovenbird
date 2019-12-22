@@ -125,7 +125,7 @@ class FileManager {
 
             this.E_DriveCollection.appendChild(e_drive)
 
-            console.info(`Disco ${drive.mounted} adicionado, fs ${drive.filesystem}`)
+            console.info(`Disco ${drive.mounted} adicionado`, drive)
         }
     }
 

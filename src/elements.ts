@@ -39,10 +39,12 @@ const CreateDriveItemElement = (drive: Drive) : HTMLDivElement => {
     e_name.classList.add('name')
 
     e_name.innerText = drive.mounted || drive.filesystem
-    e_icon.innerText = 'computer'
+    e_icon.innerText = 'usb'
 
     if (drive.filesystem.includes('CD-') || drive.filesystem.includes('DVD-'))
         e_icon.innerText = 'album'
+    if (drive.filesystem.includes('Local') || drive.filesystem.includes('local'))
+        e_icon.innerText = 'computer'
 
     e_wrapper.appendChild(e_icon)
     e_wrapper.appendChild(e_name)
