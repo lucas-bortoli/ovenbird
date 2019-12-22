@@ -54,6 +54,26 @@ const CreateDriveItemElement = (drive: Drive) : HTMLDivElement => {
     return e_wrapper
 }
 
+const CreateFavoriteDirectoryElement = (item: DirectoryItem) : HTMLDivElement => {
+    const e_wrapper = document.createElement('div')
+    const e_icon = document.createElement('span')
+    const e_name = document.createElement('span')
+
+    e_wrapper.classList.add('collection-item')
+    e_icon.classList.add('material-icons', 'icon')
+    e_name.classList.add('name')
+
+    e_name.innerText = item.name
+    e_icon.innerText = 'folder'
+
+    e_wrapper.title = item.path
+
+    e_wrapper.appendChild(e_icon)
+    e_wrapper.appendChild(e_name)
+
+    return e_wrapper
+}
+
 const CreatePathSegment = (segment: string, path: string) : HTMLDivElement => {
     const e_seg = document.createElement('div')
 
@@ -64,4 +84,4 @@ const CreatePathSegment = (segment: string, path: string) : HTMLDivElement => {
     return e_seg
 }
 
-export { CreateDirectoryItemElement, CreatePathSegment, CreateDriveItemElement }
+export { CreateDirectoryItemElement, CreatePathSegment, CreateDriveItemElement, CreateFavoriteDirectoryElement }

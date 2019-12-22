@@ -1,6 +1,6 @@
 import { readdir, stat, Dir } from 'mz/fs'
 import { join, dirname, extname, basename, sep, normalize } from 'path'
-import { CreateDirectoryItemElement, CreatePathSegment, CreateDriveItemElement } from './elements'
+import { CreateDirectoryItemElement, CreatePathSegment, CreateDriveItemElement, CreateFavoriteDirectoryElement } from './elements'
 import { shell } from 'electron'
 import { getDiskInfo } from 'node-disk-info'
 
@@ -10,14 +10,15 @@ import Drive from 'node-disk-info/dist/classes/drive'
 
 class FileManager {
     public path: string = 'C:/'
-
     public sorting_method: string = 'name'
+    public favorites: DirectoryItem[] = []
 
     private E_DirContents: HTMLDivElement = document.querySelector('.directory-contents')
     private E_PathElement: HTMLDivElement = document.querySelector('.path')
     private E_PathInput: HTMLInputElement = document.querySelector('.path-input')
     private E_NavParentDir: HTMLButtonElement = document.querySelector('#nav-parent-dir')
     private E_NavSort: HTMLButtonElement = document.querySelector('#nav-sort')
+    private E_FavoriteCollection: HTMLDivElement = document.querySelector('#favorite-list')
     private E_DriveCollection: HTMLDivElement = document.querySelector('#drive-list')
 
     constructor () {
@@ -129,6 +130,30 @@ class FileManager {
         }
     }
 
+    public updateFavoriteListing() : void {
+        this.E_FavoriteCollection.innerHTML = ''
+
+        for (let favorite of this.favorites) {
+            if (!favorite.directory) continue;
+
+            let e_fav: HTMLDivElement = CreateFavoriteDirectoryElement(favorite)
+
+            e_fav.addEventListener('click', () => this.change_dir(join(favorite.path, favorite.name)))
+            e_fav.addEventListener('contextmenu', e => {
+                let menu = new ContextMenu()
+
+                menu.add_item({ icon: 'close', text: 'Remover dos favoritos', click: () => {
+                    this.favorites.splice(this.favorites.indexOf(favorite), 1)
+                    this.updateFavoriteListing()
+                } })
+
+                menu.popup({ x: e.clientX, y: e.clientY })
+            })
+
+            this.E_FavoriteCollection.appendChild(e_fav)
+        }
+    }
+
     public async parseDirectoryItem(fullpath: string) : Promise<DirectoryItem> {
         let s = await stat(fullpath)
 
@@ -168,6 +193,10 @@ class FileManager {
             ctx.add_item({ icon: 'file_copy', text: 'Copiar', click: () => { throw 'não implementado' } })
             ctx.add_item({ icon: 'clear', text: 'Apagar', click: () => { throw 'não implementado' } })
             ctx.add_separator()
+            ctx.add_item({ icon: 'star', text: 'Adicionar aos favoritos', click: () => {
+                this.addToFavorites(item)
+                e_item.classList.remove('selected')
+            } })
             ctx.add_item({ icon: 'list', text: 'Detalhes', click: () => { throw 'não implementado' } })
 
             ctx.popup({ x: e.clientX, y: e.clientY })
@@ -175,6 +204,11 @@ class FileManager {
         })
 
         this.E_DirContents.appendChild(e_item)
+    }
+
+    public addToFavorites(file: DirectoryItem) : void {
+        this.favorites.push(file)
+        this.updateFavoriteListing()
     }
 
     public sortFiles(files: DirectoryItem[]) : DirectoryItem[] {
