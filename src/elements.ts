@@ -46,6 +46,8 @@ const CreateDriveItemElement = (drive: Drive) : HTMLDivElement => {
     if (drive.filesystem.includes('Local') || drive.filesystem.includes('local'))
         e_icon.innerText = 'computer'
 
+    e_wrapper.title = drive.filesystem
+
     e_wrapper.appendChild(e_icon)
     e_wrapper.appendChild(e_name)
 
