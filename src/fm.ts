@@ -1,4 +1,4 @@
-import { readdir, stat, Dir } from 'mz/fs'
+import { readdir, stat, Dir, unlink } from 'mz/fs'
 import { join, dirname, extname, basename, sep, normalize } from 'path'
 import { CreateDirectoryItemElement, CreatePathSegment, CreateDriveItemElement, CreateFavoriteDirectoryElement } from './elements'
 import { shell } from 'electron'
@@ -191,7 +191,19 @@ class FileManager {
 
             ctx.add_item({ icon: 'create', text: 'Renomear', click: () => { throw 'não implementado' } })
             ctx.add_item({ icon: 'file_copy', text: 'Copiar', click: () => { throw 'não implementado' } })
-            ctx.add_item({ icon: 'clear', text: 'Apagar', click: () => { throw 'não implementado' } })
+            ctx.add_item({ icon: 'clear', text: 'Apagar', click: async () => { 
+                let itemsToDelete: DirectoryItem[] = await this.getAllSelectedItems()
+
+                for (let item of itemsToDelete) {
+                    try {
+                        await unlink(join(item.path, item.name))
+                    } catch(ex) {
+                        console.error(`Erro ao apagar ${join(item.path, item.name)}`, ex)
+                    }
+                }
+
+                this.updateListing()
+            } })
             ctx.add_separator()
             ctx.add_item({ icon: 'star', text: 'Adicionar aos favoritos', click: () => {
                 this.addToFavorites(item)
@@ -221,6 +233,17 @@ class FileManager {
             default:
                 return files.sort((a, b) => a.name.localeCompare(b.name))
         }
+    }
+
+    public async getAllSelectedItems() : Promise<DirectoryItem[]> {
+        let e_selected: HTMLDivElement[] = [].slice.apply(document.querySelectorAll('.selected'))
+        let items: DirectoryItem[] = []
+        
+        for (let e of e_selected) {
+            items.push(await this.parseDirectoryItem(e.getAttribute('x-path')))
+        }
+
+        return items
     }
 }
 
