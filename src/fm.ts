@@ -1,4 +1,4 @@
-import { readdir, stat, Dir, unlink } from 'mz/fs'
+import { readdir, stat, Dir, unlink, copyFile } from 'mz/fs'
 import { join, dirname, extname, basename, sep, normalize } from 'path'
 import { CreateDirectoryItemElement, CreatePathSegment, CreateDriveItemElement, CreateFavoriteDirectoryElement } from './elements'
 import { shell } from 'electron'
@@ -12,6 +12,7 @@ class FileManager {
     public path: string = 'C:/'
     public sorting_method: string = 'name'
     public favorites: DirectoryItem[] = []
+    public copy_selection: DirectoryItem[] = []
 
     private E_DirContents: HTMLDivElement = document.querySelector('.directory-contents')
     private E_PathElement: HTMLDivElement = document.querySelector('.path')
@@ -189,8 +190,25 @@ class FileManager {
         e_item.addEventListener('contextmenu', e => {
             let ctx = new ContextMenu()
 
-            ctx.add_item({ icon: 'create', text: 'Renomear', click: () => { throw 'não implementado' } })
-            ctx.add_item({ icon: 'file_copy', text: 'Copiar', click: () => { throw 'não implementado' } })
+            // ctx.add_item({ icon: 'create', text: 'Renomear', click: () => { throw 'não implementado' } })
+            ctx.add_item({ icon: 'file_copy', text: 'Copiar', click: async () => { 
+                this.copy_selection = await this.getAllSelectedItems()
+            } })
+
+            if (this.copy_selection.length >= 1) {
+                ctx.add_item({ icon: 'file_copy', text: 'Colar', click: async () => { 
+                    for (let file of this.copy_selection) {
+                        let originPath = join(file.path, file.name)
+                        let destPath = join(this.path, file.name)
+
+                        copyFile(originPath, destPath)
+                    }
+
+                    this.copy_selection = []
+                    this.updateListing()
+                } })
+            }
+
             ctx.add_item({ icon: 'clear', text: 'Apagar', click: async () => { 
                 let itemsToDelete: DirectoryItem[] = await this.getAllSelectedItems()
 
@@ -209,7 +227,7 @@ class FileManager {
                 this.addToFavorites(item)
                 e_item.classList.remove('selected')
             } })
-            ctx.add_item({ icon: 'list', text: 'Detalhes', click: () => { throw 'não implementado' } })
+            // ctx.add_item({ icon: 'list', text: 'Detalhes', click: () => { throw 'não implementado' } })
 
             ctx.popup({ x: e.clientX, y: e.clientY })
             e_item.classList.add('selected')
